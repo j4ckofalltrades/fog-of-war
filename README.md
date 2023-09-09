@@ -1,32 +1,20 @@
+# Fog of War
 
-# Usage example
-See both TypeScript and JavaScript examples in `examples` dir. TS quickstart:
-```
-import { 
-  Dota2GSIServer,
-  Dota2Event,
-  IDota2StateEvent,
-} from 'node-gsi';
-  
-const debug = true;
-const server = new Dota2GSIServer('/gsi', debug);
+A DotA 2 game state integration library written in TypeScript.
 
-server.events.on(Dota2Event.Dota2State, (event: IDota2StateEvent) => {
-  console.log('Dota2 event!');
-  if (event.state.player) {
-    console.log(event.state.player.gold);
-  }
-});
-server.listen(9001);
-```
-# Configuration file example
-Place this content in file `steamapps/common/dota 2 beta/game/dota/cfg/gamestate_integration/gamestate_integration_*.cfg`. 
-Don't forget to replace asterisk `*` with your name.
+Tested on [7.34c](https://www.dota2.com/patches/7.34c).
+
+## Setup
+
+To configure the DotA 2 client to report game state, you need to add a config file in the
+`steamapps\common\dota 2 beta\game\dota\cfg\gamestate_integration\` directory.
+
+The filename must follow the pattern `gamestate_integration_*.cfg`, for example `gamestate_integration_dota2-gsi.cfg`.
 
 ```
 "dota2-gsi Configuration"
 {
-    "uri"               "http://localhost:9001/gsi"
+    "uri"               "http://localhost:1337/gsi"
     "timeout"           "5.0"
     "buffer"            "0.1"
     "throttle"          "0.1"
@@ -44,4 +32,22 @@ Don't forget to replace asterisk `*` with your name.
         "wearables"     "1"
     }
 }
+```
+
+##  Usage
+
+```typescript
+import { GameStateServer, PlayerGameState, } from "fog-of-war"
+
+const debug = true
+const server = new GameStateServer("/gsi", debug)
+
+server.onPlayingState((state: PlayerGameState) => {
+  console.log('Received player game state');
+  if (event.state.player) {
+    console.log(event.state.player.gold);
+  }
+})
+
+server.listen(1337)
 ```

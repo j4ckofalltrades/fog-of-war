@@ -1,43 +1,95 @@
 {
-  "name": "node-gsi",
-  "version": "0.2.1",
-  "description": "",
+  "name": "fog-of-war",
+  "version": "1.0.0",
+  "description": "DotA2 Game State Integration",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
-    "lint": "tslint -p tsconfig.json",
-    "test": "jest --config jestconfig.json"
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "typedoc": "typedoc",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/greshilov/node-gsi.git"
-  },
-  "keywords": [
-    "gsi",
-    "dota2",
-    "gamestate integration"
-  ],
-  "author": "Slavik Greshilov (@greshilov)",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/greshilov/node-gsi/issues"
-  },
-  "homepage": "https://github.com/greshilov/node-gsi#readme",
-  "devDependencies": {
-    "@types/jest": "^24.9.0",
-    "@types/node": "^13.1.6",
-    "@types/supertest": "^2.0.8",
-    "jest": "^24.9.0",
-    "prettier": "^1.19.1",
-    "supertest": "^4.0.2",
-    "ts-jest": "^24.3.0",
-    "tslint": "^5.20.1",
-    "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.7.4"
+    "url": "git+https://github.com/j4ckofalltrades/fog-of-war.git"
   },
   "files": [
-    "lib/**/*"
-  ]
+    "lib/**/*",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "dota2",
+    "game state integration"
+  ],
+  "author": "Jordan Duabe <me@jduabe.dev> (https://jduabe.dev)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/j4ckofalltrades/fog-of-war/issues"
+  },
+  "homepage": "https://github.com/j4ckofalltrades/fog-of-war",
+  "devDependencies": {
+    "@tsconfig/recommended": "^1.0.2",
+    "@types/node": "^18.16.0",
+    "@typescript-eslint/eslint-plugin": "^6.3.0",
+    "@typescript-eslint/parser": "^6.3.0",
+    "eslint": "^8.47.0",
+    "eslint-config-prettier": "^9.0.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.3.0",
+    "prettier": "^3.0.1",
+    "typedoc": "^0.25.1",
+    "typescript": "^5.0.0"
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "es2021": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "prettier"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "ecmaVersion": 12,
+      "sourceType": "module"
+    },
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "rules": {
+      "indent": [
+        "error",
+        2
+      ],
+      "linebreak-style": [
+        "error",
+        "unix"
+      ],
+      "quotes": [
+        "error",
+        "double"
+      ],
+      "semi": [
+        "error",
+        "never"
+      ],
+      "@typescript-eslint/no-explicit-any": "off"
+    }
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --cache --fix",
+      "prettier --write src"
+    ]
+  },
+  "prettier": {
+    "printWidth": 120,
+    "semi": false,
+    "trailingComma": "all"
+  }
 }

@@ -1,20 +1,22 @@
 {
-    "compilerOptions": {
-        "target": "es6",
-        "types": [
-            "@types/node",
-            "@types/jest"
-        ],
-        "module": "commonjs",
-        "declaration": true,
-        "outDir": "./lib",
-        "strict": true
-    },
-    "include": [
-        "src"
+  "extends": "@tsconfig/recommended/tsconfig.json",
+  "include": [
+    "src"
+  ],
+  "compilerOptions": {
+    "allowJs": true,
+    "declaration": true,
+    "moduleResolution": "node",
+    "outDir": "lib",
+  },
+  "typedocOptions": {
+    "entryPoints": [
+      "src/index.ts"
     ],
-    "exclude": [
-        "node_modules",
-        "**/__tests__/*"
-    ]
+    "includeVersion": true,
+    "name": "DotA 2 Game State Integration",
+    "out": "docs",
+    "theme": "default",
+    "darkHighlightTheme": "dark-plus"
+  }
 }
