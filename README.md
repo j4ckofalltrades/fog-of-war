@@ -1,8 +1,26 @@
-# Fog of War
+<div align="center">
+  <a href="https://github.com/j4ckofalltrades/fog-of-war">
+    <img src="https://res.cloudinary.com/j4ckofalltrades/image/upload/v1696140746/foss/icons8-dota-2-192_qquwjw.svg" alt="Logo" />
+  </a>
+  <h1 style="margin-top: 0px;">Fog of War</h1>
+</div>
 
-A DotA 2 game state integration library written in TypeScript.
+---
 
-Tested on [7.34c](https://www.dota2.com/patches/7.34c).
+[![npm](https://img.shields.io/npm/v/fog-of-war)](https://npmjs.com/package/fog-of-war)
+![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/j4ckofalltrades/steam-webapi-ts/typescript)
+
+[![npm](https://nodei.co/npm/fog-of-war.png?compact=true)](https://npmjs.com/package/fog-of-war)
+
+A DotA 2 game state integration library (tested on version [7.34c](https://www.dota2.com/patches/7.34c)) written in TypeScript .
+
+For a list of available functions, check out the [docs](https://j4ckofalltrades.github.io/fog-of-war).
+
+Icon by [Icons8](https://icons8.com).
+
+## Installation
+
+`$ npm install fog-of-war`
 
 ## Setup
 
@@ -37,15 +55,22 @@ The filename must follow the pattern `gamestate_integration_*.cfg`, for example 
 ##  Usage
 
 ```typescript
-import { GameStateServer, PlayerGameState, } from "fog-of-war"
+import { GameStateServer, ObserverGameStateEvent, PlayerGameStateEvent, } from "fog-of-war"
 
 const debug = true
 const server = new GameStateServer("/gsi", debug)
 
-server.onPlayingState((state: PlayerGameState) => {
+server.onPlayerGameStateEvent((event: PlayerGameStateEvent) => {
   console.log('Received player game state');
   if (event.state.player) {
     console.log(event.state.player.gold);
+  }
+})
+
+server.onObserverGameStateEvent((event: ObserverGameStateEvent) => {
+  console.log('Received observer game state');
+  if (event.state.player) {
+    console.log(event.state.player[0].gold);
   }
 })
 

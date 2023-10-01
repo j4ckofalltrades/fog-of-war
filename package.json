@@ -1,13 +1,14 @@
 {
   "name": "fog-of-war",
   "version": "1.0.0",
-  "description": "DotA2 Game State Integration",
+  "description": "DotA 2 Game State Integration library written in TypeScript.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --declaration true",
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
+    "test": "",
     "typedoc": "typedoc",
     "prepare": "husky install"
   },
@@ -31,14 +32,14 @@
   },
   "homepage": "https://github.com/j4ckofalltrades/fog-of-war",
   "devDependencies": {
-    "@tsconfig/recommended": "^1.0.2",
+    "@tsconfig/recommended": "^1.0.3",
     "@types/node": "^18.16.0",
-    "@typescript-eslint/eslint-plugin": "^6.3.0",
-    "@typescript-eslint/parser": "^6.3.0",
-    "eslint": "^8.47.0",
+    "@typescript-eslint/eslint-plugin": "^6.7.3",
+    "@typescript-eslint/parser": "^6.7.3",
+    "eslint": "^8.50.0",
     "eslint-config-prettier": "^9.0.0",
     "husky": "^8.0.0",
-    "lint-staged": "^13.3.0",
+    "lint-staged": "^14.0.1",
     "prettier": "^3.0.1",
     "typedoc": "^0.25.1",
     "typescript": "^5.0.0"

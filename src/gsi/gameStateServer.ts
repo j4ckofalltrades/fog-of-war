@@ -1,15 +1,13 @@
 import { EventEmitter } from "events"
 import * as http from "http"
 import {
-  GameStateEvent,
   Buildings,
-  ObserverGameState,
-  ObserverGameStateEvent,
-  PlayerGameState,
-  PlayerGameStateEvent,
+  GameStateEvent,
   Hero,
   ItemContainer,
+  ObserverGameStateEvent,
   Player,
+  PlayerGameStateEvent,
   Provider,
   WearableItem,
 } from "./types"
@@ -35,6 +33,12 @@ function* observerStateGenerator(teamPlayerObj: unknown) {
   }
 }
 
+/**
+ * Handles game state events from the DotA 2 game client and exposes functions to listen to specific in-game events.
+ * The game client reports either player or observer events depending on if the current user is playing or observing
+ * a game. The player game state event payload will be a subset of the observable game state, mostly including global
+ * map and current play state.
+ */
 export class GameStateServer {
   public events: EventEmitter
   public server: http.Server
@@ -42,6 +46,12 @@ export class GameStateServer {
   private readonly debug: boolean
   private readonly url: string
 
+  /**
+   * Game state server constructor.
+   *
+   * @param url (Optional) Path where game state event data from the client is received, defaults to "/".
+   * @param debug (Optional) Whether to log more information, defaults to `false`.
+   */
   constructor(url: string = "/", debug = false) {
     if (!url.startsWith("/")) {
       throw Error(`Invalid serve url '${url}'! Must be starting from '/'.`)
@@ -52,6 +62,13 @@ export class GameStateServer {
     this.server = http.createServer((req, res) => this.handleRequest(req, res))
   }
 
+  /**
+   * Starts the game state integration server on the specified host and port. This should match the game state
+   * integration configuration in the DotA 2 game client.
+   *
+   * @param port (Optional) Port number, defaults to 9001.
+   * @param host (Optional) Host name, defaults to "127.0.0.1".
+   */
   public listen(port: number = 9001, host: string = "127.0.0.1") {
     if (this.debug) {
       console.log(`Starting serving at http://${host}:${port}${this.url}`)
@@ -63,12 +80,22 @@ export class GameStateServer {
     this.server.close()
   }
 
-  public onPlayingState(handler: (event: PlayerGameState) => void) {
-    this.events.on("dota2-player-state", handler)
+  /**
+   * Register a handler for {@link PlayerGameStateEvent}.
+   *
+   * @param listener Listener function that processes {@link PlayerGameStateEvent} data.
+   */
+  public onPlayerGameStateEvent(listener: (event: PlayerGameStateEvent) => void) {
+    this.events.on("dota2-player-state", listener)
   }
 
-  public onObserverState(handler: (event: ObserverGameState) => void) {
-    this.events.on("dota2-observer-state", handler)
+  /**
+   * Register a handler for {@link ObserverGameStateEvent}.
+   *
+   * @param listener Listener function that processes {@link ObserverGameStateEvent} data.
+   */
+  public onObserverGameStateEvent(listener: (event: ObserverGameStateEvent) => void) {
+    this.events.on("dota2-observer-state", listener)
   }
 
   private async handleRequest(req: http.IncomingMessage, res: http.ServerResponse) {
@@ -123,7 +150,7 @@ export class GameStateServer {
     return rawState["player"] !== undefined && rawState["player"]["team2"] !== undefined
   }
 
-  private emitGameStateEvent(dota2Event: GameStateEvent, ...args: any[]): boolean {
+  private emitGameStateEvent(dota2Event: GameStateEvent, args: any): boolean {
     return this.events.emit(dota2Event, args)
   }
 
@@ -134,13 +161,13 @@ export class GameStateServer {
     const changes = this.parseState(previously, observerMode)
 
     if (observerMode) {
-      this.emitGameStateEvent("dota2-observer-state", { state, changes } as ObserverGameStateEvent)
+      this.emitGameStateEvent("dota2-observer-state", { state, changes })
     } else {
-      this.emitGameStateEvent("dota2-player-state", { state, changes } as PlayerGameStateEvent)
+      this.emitGameStateEvent("dota2-player-state", { state, changes })
     }
   }
 
-  private parseState(rawState: any, observerMode: boolean): PlayerGameState {
+  private parseState(rawState: any, observerMode: boolean) {
     let buildings = null
     if (checkKey(rawState, "buildings")) {
       const direBuildings = rawState["buildings"]["dire"]
@@ -242,6 +269,6 @@ export class GameStateServer {
       items,
       draft,
       wearables,
-    } as PlayerGameState
+    }
   }
 }
