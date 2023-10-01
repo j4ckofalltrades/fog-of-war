@@ -5,8 +5,6 @@
   <h1 style="margin-top: 0px;">Fog of War</h1>
 </div>
 
----
-
 [![npm](https://img.shields.io/npm/v/fog-of-war)](https://npmjs.com/package/fog-of-war)
 ![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/j4ckofalltrades/steam-webapi-ts/typescript)
 
